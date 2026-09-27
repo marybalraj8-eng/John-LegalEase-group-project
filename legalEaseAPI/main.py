@@ -1,0 +1,18 @@
+import uvicorn
+from fastapi import FastAPI
+from legalEaseAPI.routes import router
+
+app = FastAPI(
+    title="LegalEase AI Legal Document Generator API",
+    description="Backend service generating structured legal contracts using Gemini AI Core",
+    version="1.0.0"
+)
+
+app.include_router(router)
+
+@app.get("/")
+def home():
+    return {"message": "Welcome to LegalEase AI Legal Document Generator API"}
+
+if __name__ == "__main__":
+    uvicorn.run("legalEaseAPI.main:app", host="0.0.0.0", port=8000, reload=True)

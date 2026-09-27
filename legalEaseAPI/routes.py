@@ -1,29 +1,35 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from ai_core.gemini_generator import GeminiDocumentGenerator
+from utils.formatter import format_pdf, format_docx
+import base64
+
 router = APIRouter()
 generator = GeminiDocumentGenerator()
 
 class DocumentRequest(BaseModel):
-    document_type: str = ""
-    doc_type: str = ""
-    parties: str = ""
-    terms: str = ""
-    dates: str = ""
-    effective_date: str = ""
+    doc_type: str
+    details: str
 
 @router.post("/generate")
-async def generate_doc(req: DocumentRequest):
+async def generate_legal_doc(request: DocumentRequest):
     try:
-        doc_type = req.document_type or req.doc_type or "Agreement"
-        date_val = req.dates or req.effective_date or ""
+        # Generate text using Gemini
+        content = generator.generate_document(request.doc_type, request.details)
         
-        generated_text = generator.generate(
-            document_type=doc_type,
-            parties=req.parties,
-            terms=req.terms,
-            dates=date_val
-        )
-        return {"status": "success", "document": generated_text, "generated_document": generated_text}
+        # Format to PDF & DOCX
+        pdf_bytes = format_pdf(content, title=request.doc_type)
+        docx_bytes = format_docx(content, title=request.doc_type)
+        
+        # Encode bytes to Base64 strings for JSON response
+        pdf_b64 = base64.b64encode(pdf_bytes).decode('utf-8')
+        docx_b64 = base64.b64encode(docx_bytes).decode('utf-8')
+        
+        return {
+            "status": "success",
+            "content": content,
+            "pdf_b64": pdf_b64,
+            "docx_b64": docx_b64
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

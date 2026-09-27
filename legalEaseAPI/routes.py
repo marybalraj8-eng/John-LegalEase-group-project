@@ -5,10 +5,16 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 # Render-ல் ModuleNotFoundError வராமல் இருக்க Root Path-ஐக் கண்டறிந்து சேர்க்கிறது
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
 from ai_core.gemini_generator import GeminiDocumentGenerator
-from utils.formatter import format_pdf, format_docx
+
+try:
+    from utils.formatter import format_pdf, format_docx
+except ModuleNotFoundError:  # pragma: no cover
+    from .utils.formatter import format_pdf, format_docx
 
 router = APIRouter()
 generator = GeminiDocumentGenerator()

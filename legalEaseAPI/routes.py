@@ -4,8 +4,8 @@ import base64
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-# Render-ல் Root Directory-ஐ சரியாகக் கண்டுபிடிக்க PYTHONPATH அமைத்தல்
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Render-ல் ModuleNotFoundError வராமல் இருக்க Root Path-ஐக் கண்டறிந்து சேர்க்கிறது
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from ai_core.gemini_generator import GeminiDocumentGenerator
 from utils.formatter import format_pdf, format_docx

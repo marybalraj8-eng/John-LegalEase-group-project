@@ -1,6 +1,7 @@
 import sys
 import os
 import base64
+import importlib
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
@@ -11,7 +12,13 @@ if PROJECT_ROOT not in sys.path:
 
 from ai_core.gemini_generator import GeminiDocumentGenerator
 
-from .utils.formatter import format_pdf, format_docx
+try:
+    formatter_module = importlib.import_module("utils.formatter")
+except ModuleNotFoundError:
+    formatter_module = importlib.import_module("legalEaseAPI.utils.formatter")
+
+format_pdf = formatter_module.format_pdf
+format_docx = formatter_module.format_docx
 
 router = APIRouter()
 generator = GeminiDocumentGenerator()

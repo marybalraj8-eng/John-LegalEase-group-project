@@ -1,8 +1,8 @@
 import sys
 import os
 
-# Project Root Directory-ஐ Python Path-ல் முதன்மையாகச் சேர்க்கிறது
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+# Root directory-ஐ Python path-ன் தொடக்கத்தில் சேர்க்கிறது
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from fastapi import FastAPI
 from legalEaseAPI.routes import router
@@ -13,4 +13,4 @@ app.include_router(router)
 
 @app.get("/")
 def read_root():
-    return {"message": "LegalEase API is running successfully!"}
+    return {"status": "LegalEase API is active!"}

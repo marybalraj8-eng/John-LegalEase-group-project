@@ -1,8 +1,15 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from ai_core.gemini_generator import GeminiDocumentGenerator
-from utils.formatter import format_pdf, format_docx
-import base64
+try:
+    from utils.formatter import format_pdf, format_docx
+except ModuleNotFoundError:
+    from legalEaseAPI.utils.formatter import format_pdf, format_docx
+
+try:
+    from legalEaseAPI.utils.formatter import format_pdf, format_docx
+except ImportError:
+    from .utils.formatter import format_pdf, format_docx
 
 router = APIRouter()
 generator = GeminiDocumentGenerator()

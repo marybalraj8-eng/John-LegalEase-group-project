@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "legalEaseAPI/main.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "legalEaseAPI/main.py"
+    }
+  ]
+}

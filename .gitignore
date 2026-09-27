@@ -5,5 +5,4 @@ venv/
 .env
 *.docx
 *.pdf
-*.txt
 .streamlit/

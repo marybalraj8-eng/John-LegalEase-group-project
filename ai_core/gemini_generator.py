@@ -4,6 +4,7 @@ from fpdf import FPDF
 from docx import Document
 
 
+
 def sanitize_text(text: str) -> str:
     """Strictly cleans Unicode characters and markdown symbols before sending to FPDF."""
     if not text:

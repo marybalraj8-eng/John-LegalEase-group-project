@@ -11,10 +11,7 @@ if PROJECT_ROOT not in sys.path:
 
 from ai_core.gemini_generator import GeminiDocumentGenerator
 
-try:
-    from utils.formatter import format_pdf, format_docx
-except ModuleNotFoundError:  # pragma: no cover
-    from .utils.formatter import format_pdf, format_docx
+from .utils.formatter import format_pdf, format_docx
 
 router = APIRouter()
 generator = GeminiDocumentGenerator()
